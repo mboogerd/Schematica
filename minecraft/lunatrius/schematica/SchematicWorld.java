@@ -85,7 +85,6 @@ public class SchematicWorld extends World {
 		generateBlockList();
 	}
 
-	@SuppressWarnings("null")
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		if (tagCompound.hasKey("Icon")) {
 			this.icon.readFromNBT(tagCompound.getCompoundTag("Icon"));

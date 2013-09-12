@@ -8,7 +8,6 @@ import net.minecraft.util.StatCollector;
 
 public class GuiSchematicControl extends GuiScreen {
 	private final Settings settings = Settings.instance();
-	@SuppressWarnings("unused")
 	private final GuiScreen prevGuiScreen;
 
 	private int centerX = 0;
