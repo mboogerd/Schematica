@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="minecraft"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Minecraft"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
