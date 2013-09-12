@@ -83,7 +83,7 @@ public class RendererSchematicChunk {
 		this.glList = GL11.glGenLists(3);
 
 		try {
-			this.fieldMapTexturesStiched = ReflectionHelper.findField(TextureMap.class, "f", "field_94252_e", "mapTexturesStiched");
+			this.fieldMapTexturesStiched = ReflectionHelper.findField(TextureMap.class, "f", "field_94252_e", "mapUploadedSprites");
 		} catch (Exception ex) {
 			Settings.logger.logSevereException("Failed to initialize mapTexturesStiched!", ex);
 			this.fieldMapTexturesStiched = null;
