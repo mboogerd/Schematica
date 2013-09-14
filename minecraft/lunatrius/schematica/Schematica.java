@@ -1,16 +1,18 @@
 package lunatrius.schematica;
 
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
+
 import lunatrius.schematica.renderer.RendererSchematicChunk;
 import lunatrius.schematica.renderer.RendererSchematicGlobal;
 import lunatrius.schematica.util.Config;
@@ -23,18 +25,22 @@ import net.minecraft.profiler.Profiler;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.*;
-import java.util.Map.Entry;
+import beyonix.schematica.WorldRecipe;
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = "Schematica")
 public class Schematica {
+	
 	private static final FileFilterConfiguration FILE_FILTER_CONFIGURATION = new FileFilterConfiguration();
 	private static final String DIR_ASSETS = "lunatrius/schematica/assets/";
 
@@ -45,7 +51,7 @@ public class Schematica {
 
 	@Instance("Schematica")
 	public static Schematica instance;
-
+	
 	private Field sortedWorldRenderers = null;
 	private File configurationFolder = null;
 
@@ -190,6 +196,12 @@ public class Schematica {
 			TickRegistry.registerTickHandler(new Ticker(EnumSet.of(TickType.CLIENT)), Side.CLIENT);
 
 			this.sortedWorldRenderers = ReflectionHelper.findField(RenderGlobal.class, "n", "field_72768_k", "sortedWorldRenderers");
+			
+			//This initializes all the goodies that will make the mod features available through ordinary minecraft mechanics
+			//The tutorials I've seen include that code in the main mod class, but I separate it here to ease up the process of merging
+			WorldRecipe recepy = new WorldRecipe();
+			recepy.init();
+			
 		} catch (Exception e) {
 			Settings.logger.logSevereException("Could not initialize the mod!", e);
 			throw new RuntimeException(e);
