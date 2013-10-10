@@ -1,9 +1,8 @@
 package beyonix.schematica;
 
-import java.io.File;
-import java.io.IOException;
-
 import lunatrius.schematica.Settings;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,11 +11,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import org.lwjgl.util.vector.Vector3f;
-
-public class Workbench extends net.minecraft.block.Block {
+public class Workbench extends Block implements ITileEntityProvider {
 
 	public Workbench(int id, Material material) {
 		super(id, material);
@@ -34,7 +32,7 @@ public class Workbench extends net.minecraft.block.Block {
 		
 		ItemStack usedItem = player.getCurrentEquippedItem();
     	InventoryPlayer inventory = player.inventory;
-    	((EntityPlayerMP)player).sendPlayerAbilities();
+    	//((EntityPlayerMP)player).sendPlayerAbilities();
     	if ( usedItem != null) {
     		
     		if ( usedItem.itemID == Item.emptyMap.itemID ) {
@@ -63,6 +61,14 @@ public class Workbench extends net.minecraft.block.Block {
 				}
     		} else if (usedItem.itemID == WorldRecipe.fullPlan.itemID) {
     			NBTTagCompound metadata = usedItem.getTagCompound();
+    			if ( metadata != null && metadata.hasKey("schematic") ) {
+    				NBTTagCompound schematic = metadata.getCompoundTag("schematic");
+    				player.addChatMessage("SCHEMATICA: This blueprint has " + schematic.getTags().size() + " tags");
+    			} else {
+    				player.addChatMessage("SCHEMATICA: This blueprint contains no data");
+    			}
+    			
+    			/*
     			String filename = metadata.getString("filename");
     			player.addChatMessage("Loading projection with centerpoint: " + filename);
     			
@@ -73,6 +79,7 @@ public class Workbench extends net.minecraft.block.Block {
     			} catch (IOException e) {
     				player.addChatMessage("Loading projection failed due to: '" + e.getLocalizedMessage() + "'");
     			}
+    			*/
     		}
     	}
     	
@@ -88,6 +95,13 @@ public class Workbench extends net.minecraft.block.Block {
 		stack.setTagCompound(metadata);
 		
 		return stack;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		TileEntity tile = new TileEntity();
+		//tile.createAndLoadEntity(par0NBTTagCompound)
+		return null;
 	}
 
 }

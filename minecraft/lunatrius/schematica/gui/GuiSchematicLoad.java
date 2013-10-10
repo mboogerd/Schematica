@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.Sys;
 
 import java.io.File;
@@ -163,6 +164,9 @@ public class GuiSchematicLoad extends GuiScreen {
 	private void loadSchematic() {
 		int selectedIndex = this.guiSchematicLoadSlot.selectedIndex;
 
+		//2013-09-04: added some logging to figure out if OpenGL errors are due to different thread
+		//Settings.logger.logSevereException( Thread.currentThread().getName() + " - " + Thread.currentThread().getId(), new RuntimeException("GuiSchematicLoad") );
+		Settings.logger.logInfo( "Workbench thread: " + Thread.currentThread().getName() + " - " + Thread.currentThread().getId() );
 		try {
 			if (selectedIndex >= 0 && selectedIndex < this.schematicFiles.size()) {
 				GuiSchematicEntry schematic = this.schematicFiles.get(selectedIndex);

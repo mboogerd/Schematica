@@ -7,6 +7,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+/**
+ * Fullplan
+ * @author Merlijn
+ *
+ */
 public class FullPlan extends Item {
 
 	public FullPlan(int id) {
