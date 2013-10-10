@@ -50,7 +50,7 @@ public class RendererSchematicChunk {
 	private final AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 
 	private static final Map<String, ResourceLocation> resourcePacks = new HashMap<String, ResourceLocation>();
-	private Field mapUploadedSprites;
+	private Field fieldMapTexturesStiched;
 
 	private boolean needsUpdate = true;
 	private int glList = -1;
@@ -83,10 +83,10 @@ public class RendererSchematicChunk {
 		this.glList = GL11.glGenLists(3);
 
 		try {
-			this.mapUploadedSprites = ReflectionHelper.findField(TextureMap.class, "f", "field_94252_e", "mapUploadedSprites");
+			this.fieldMapTexturesStiched = ReflectionHelper.findField(TextureMap.class, "f", "field_94252_e", "mapUploadedSprites");
 		} catch (Exception ex) {
-			Settings.logger.logSevereException("Failed to initialize mapUploadedSprites!", ex);
-			this.mapUploadedSprites = null;
+			Settings.logger.logSevereException("Failed to initialize mapTexturesStiched!", ex);
+			this.fieldMapTexturesStiched = null;
 		}
 	}
 
@@ -399,7 +399,7 @@ public class RendererSchematicChunk {
 
 				BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-				Map<String, TextureAtlasSprite> map = (Map<String, TextureAtlasSprite>) mapUploadedSprites.get(this.minecraft.renderEngine.getTexture(TextureMap.locationBlocksTexture));
+				Map<String, TextureAtlasSprite> map = (Map<String, TextureAtlasSprite>) fieldMapTexturesStiched.get(this.minecraft.renderEngine.getTexture(TextureMap.locationBlocksTexture));
 				if (map == null) {
 					Settings.logger.logSevere("mapTexturesStiched is null!");
 					resourcePacks.put(resourcePackName, TextureMap.locationBlocksTexture);
@@ -427,8 +427,8 @@ public class RendererSchematicChunk {
 						int x, y;
 						int color, alpha, index = 0;
 
-						for (y = 0; y < sprite.getOriginY(); y++) {
-							for (x = 0; x < sprite.getOriginX(); x++) {
+						for (y = 0; y < sprite.getIconHeight(); y++) {
+							for (x = 0; x < sprite.getIconWidth(); x++) {
 								color = data[index++];
 								alpha = (color >> 24) & 0xFF;
 								alpha *= this.settings.alpha;
